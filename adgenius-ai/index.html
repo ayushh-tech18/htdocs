@@ -1,0 +1,632 @@
+<!doctype html>
+<!-- ==========================================================================
+     File : index.html (Part 1 — Pure HTML5 Structure File)
+     Kaam : Website ka main HTML skeleton (structure). Top navbar, two-column
+            video studio, saved campaigns grid, overview page aur account form
+            banata hai. Yahan CSS ya JS mix nahi hai — wo alag files me hain.
+     ========================================================================== -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdGenius — Short Video Advertisement Generator</title>
+    <link rel="icon" type="image/png" href="assets/images/logo_icon.png" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- ====================================================================
+         TOP NAVIGATION BAR
+         Semantic <header> tag site ki top strip ke liye use hota hai.
+         Left me AdGenius logo, beech me 4 page tab aur right me Sign In button.
+         ==================================================================== -->
+    <header class="navbar">
+      <!-- Brand logo box: logo dikhata hai, click par Studio view kholta hai -->
+      <div class="brand" data-open-view="studio">
+        <img
+          src="assets/images/logo_icon.png"
+          alt="AdGenius Logo"
+          class="brand-logo-img"
+        />
+        <div class="brand-text-wrap">
+          <div class="brand-name">Ad<span>Genius</span></div>
+          <div class="brand-sub">Video Ad Studio</div>
+        </div>
+      </div>
+
+      <!-- <nav> navigation menu: page reload kiye bina 4 view ke beech switch karta hai.
+             data-open-view attribute JS ko batata hai ki click par kaun sa view khule -->
+      <nav class="nav-links">
+        <button
+          type="button"
+          class="nav-link-btn active"
+          id="tab-studio"
+          data-open-view="studio"
+        >
+          Ad Studio
+        </button>
+        <button
+          type="button"
+          class="nav-link-btn"
+          id="tab-saved"
+          data-open-view="saved"
+        >
+          Saved Campaigns
+        </button>
+        <button
+          type="button"
+          class="nav-link-btn"
+          id="tab-home"
+          data-open-view="home"
+        >
+          Overview
+        </button>
+        <button
+          type="button"
+          class="nav-link-btn"
+          id="tab-auth"
+          data-open-view="auth"
+        >
+          Account
+        </button>
+      </nav>
+
+      <!-- Right side user box: login hone par user ka naam aur Sign In button -->
+      <div class="nav-right">
+        <span
+          id="userLabel"
+          style="font-size: 0.8rem; color: var(--text-muted); display: none"
+        ></span>
+        <button
+          type="button"
+          id="navSignInBtn"
+          class="btn btn-outline btn-sm"
+          data-open-view="auth"
+        >
+          Sign In
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         VIEW 1: MAIN TWO-COLUMN COMMERCIAL VIDEO STUDIO (default active tab)
+         #pane-studio main working dashboard hai — left me product form aur
+         right me 60fps video player.
+         ==================================================================== -->
+    <section id="pane-studio" class="view-pane active">
+      <main class="workspace-wrap">
+        <!-- LEFT COLUMN CARD: product details aur commercial template form -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Create Commercial Video</div>
+              <div class="card-sub">
+                Select a template or enter your product details
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 category preset button (har ek par data-cat value).
+                     Ek click me food, study, tech, sneakers, coffee ya skincare ka sample ad load hota hai -->
+          <label class="field-label">Commercial Templates</label>
+          <div class="category-grid">
+            <button type="button" class="cat-btn active" data-cat="food">
+              Food &amp; Pizza
+            </button>
+            <button type="button" class="cat-btn" data-cat="study">
+              College &amp; Study
+            </button>
+            <button type="button" class="cat-btn" data-cat="tech">
+              Tech Gadgets
+            </button>
+            <button type="button" class="cat-btn" data-cat="fashion">
+              Sneakers
+            </button>
+            <button type="button" class="cat-btn" data-cat="coffee">
+              Cold Coffee
+            </button>
+            <button type="button" class="cat-btn" data-cat="beauty">
+              Skincare
+            </button>
+          </div>
+
+          <!-- Main HTML form (#studioForm): brand name, offer, platform aur
+                     ratio lekar JS / PHP ko deta hai -->
+          <form id="studioForm">
+            <!-- Input 1: brand ya product ka naam (required = khali nahi chhod sakte) -->
+            <div class="field">
+              <label class="field-label">Brand or Product Name</label>
+              <input
+                type="text"
+                id="productName"
+                class="input"
+                value="FlameCraft Pizza &amp; Burger"
+                placeholder="e.g. Dominoz Pizza or GLA University"
+                required
+              />
+              <!-- Inline validation message: JS form validation ka error laal me -->
+              <span class="field-error" id="productNameError"></span>
+            </div>
+
+            <!-- Input 2: main offer aur highlights (multi-line textarea) -->
+            <div class="field">
+              <label class="field-label">Main Offer &amp; Highlights</label>
+              <textarea
+                id="productDesc"
+                class="input"
+                placeholder="e.g. Buy 1 Get 1 Free, hot delivery in 25 mins"
+                required
+              >
+Wood-fired pepperoni pizza and a double smashed cheeseburger - Buy 1 Get 1 Free, 25 minute hot delivery.</textarea
+              >
+              <!-- Inline validation message: JS form validation ka error laal me -->
+              <span class="field-error" id="productDescError"></span>
+            </div>
+
+            <!-- Ek row me 2 dropdown: target platform aur video aspect ratio -->
+            <div class="row-2">
+              <div class="field">
+                <label class="field-label">Platform</label>
+                <select id="platformSelect" class="input">
+                  <option value="Instagram Reels">Instagram Reels</option>
+                  <option value="YouTube Shorts">YouTube Shorts</option>
+                  <option value="YouTube Video Ad">YouTube Video Ad</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Video Format</label>
+                <select id="aspectRatioSelect" class="input">
+                  <option value="9:16">9:16 Vertical</option>
+                  <option value="16:9">16:9 Landscape</option>
+                  <option value="1:1">1:1 Square</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Multi-file upload input (multiple attribute se ek saath 3-4 photo
+                         chuni ja sakti hain). Scene 1 se Scene 4 ke liye 1 se 4 product photo -->
+            <div class="upload-strip">
+              <span id="uploadStatusText"
+                >Optional: Upload up to 4 product photos</span
+              >
+              <label class="btn btn-outline btn-sm" style="cursor: pointer">
+                Upload Photos (1-4)
+                <input
+                  type="file"
+                  id="customPhotoInput"
+                  accept="image/*"
+                  multiple
+                  style="display: none"
+                />
+              </label>
+            </div>
+
+            <!-- Uploaded photo ka thumbnail strip (default me hidden).
+                         Chuni hui 1-4 photo ka chhota preview aur Clear button dikhata hai -->
+            <div
+              id="uploadedThumbsWrap"
+              class="uploaded-thumbs-wrap"
+              style="display: none"
+            >
+              <div class="uploaded-thumbs-list" id="uploadedThumbsList"></div>
+              <button
+                type="button"
+                id="clearPhotosBtn"
+                class="btn btn-outline btn-sm thumb-clear-btn"
+              >
+                Clear
+              </button>
+            </div>
+
+            <!-- Edit mode banner: sirf tab dikhta hai jab saved campaign edit ho raha ho -->
+            <div id="editModeBar" class="edit-mode-bar" style="display: none">
+              <span id="editModeText">Editing campaign</span>
+              <button
+                type="button"
+                id="cancelEditBtn"
+                class="btn btn-outline btn-sm"
+              >
+                Cancel Edit
+              </button>
+            </div>
+
+            <!-- Form submit button: naya video ad bana kar MySQL me save karta hai -->
+            <button
+              type="submit"
+              id="generateBtn"
+              class="btn btn-primary"
+              style="width: 100%"
+            >
+              Generate Video Ad
+            </button>
+          </form>
+        </div>
+
+        <!-- RIGHT COLUMN CARD: 60fps HTML5 canvas video player aur live scene editor -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <!-- Dynamic title: abhi kaun sa brand aur platform chal raha hai -->
+              <div class="card-title" id="stageBrandTitle">
+                FlameCraft Pizza &amp; Burger — Instagram Reels
+              </div>
+              <div class="card-sub">
+                60fps Motion-Graphics Commercial Preview
+              </div>
+            </div>
+            <!-- Export button: canvas record kar ke .webm file download karta hai -->
+            <button
+              type="button"
+              id="exportVideoBtn"
+              class="btn btn-primary btn-sm"
+            >
+              Download Video (.webm)
+            </button>
+          </div>
+
+          <!-- HTML5 <canvas> stage: JS yahan 1 second me 60 frame draw karta hai -->
+          <div class="stage-box">
+            <div class="video-frame">
+              <canvas id="adCanvas" width="336" height="596"></canvas>
+            </div>
+
+            <!-- Video controls: play, pause aur Scene 1, 2, 3 ya 4 par jump -->
+            <div class="stage-toolbar">
+              <button
+                type="button"
+                id="playPauseBtn"
+                class="btn btn-outline btn-sm"
+                style="color: #fff; border-color: rgba(255, 255, 255, 0.22)"
+              >
+                Pause
+              </button>
+              <div class="scene-pills" id="scenePillsBox"></div>
+            </div>
+          </div>
+
+          <!-- Live quick-edit bar: type karte hi screen ka text badal jaata hai -->
+          <div class="quick-edit-bar">
+            <div>
+              <label class="field-label">Edit Scene Headline</label>
+              <input type="text" id="editHeadline" class="input" />
+            </div>
+            <div>
+              <label class="field-label">Edit Subline</label>
+              <input type="text" id="editSubtext" class="input" />
+            </div>
+            <!-- Copy button: ready social media caption aur hashtags copy karta hai -->
+            <button
+              type="button"
+              id="copyCaptionBtn"
+              class="btn btn-outline"
+              style="height: 40px"
+            >
+              Copy Caption
+            </button>
+          </div>
+
+          <!-- Video specs aur ready caption box: format info aur social post caption -->
+          <div class="insights-row">
+            <div class="score-tile">
+              <span
+                style="
+                  font-size: 0.73rem;
+                  color: var(--text-muted);
+                  font-weight: 600;
+                  text-transform: uppercase;
+                "
+                >Video Specs</span
+              >
+              <div
+                style="font-size: 1.4rem; font-weight: 800; margin: 6px 0"
+                id="metaFormat"
+              >
+                9:16 • 4 Scenes
+              </div>
+              <span
+                style="font-size: 0.79rem; color: var(--text-secondary)"
+                id="metaPlatform"
+                >Instagram Reels</span
+              >
+            </div>
+            <div class="caption-tile">
+              <span
+                style="
+                  font-size: 0.73rem;
+                  color: var(--text-muted);
+                  font-weight: 600;
+                  text-transform: uppercase;
+                "
+                >Ready Ad Caption</span
+              >
+              <p
+                id="captionText"
+                style="
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+                  margin-top: 6px;
+                "
+              ></p>
+              <p
+                id="hashtagsText"
+                style="
+                  font-size: 0.8rem;
+                  color: var(--accent);
+                  font-weight: 600;
+                  margin-top: 6px;
+                "
+              ></p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 2: SAVED CAMPAIGNS TAB
+         #pane-saved MySQL database me save ads dikhata hai. JavaScript har
+         saved ad ka card #savedAdsGrid ke andar banata hai.
+         ==================================================================== -->
+    <section id="pane-saved" class="view-pane">
+      <div class="container">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <h2 style="font-size: 1.45rem">Saved Campaigns (MySQL)</h2>
+            <p
+              style="
+                font-size: 0.86rem;
+                color: var(--text-muted);
+                margin-top: 3px;
+              "
+            >
+              Click any saved campaign card to open and play it in the studio.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            data-open-view="studio"
+          >
+            New Commercial
+          </button>
+        </div>
+        <!-- Search box: saved campaigns ko title, category ya platform se filter
+                 karta hai (JavaScript + SQL LIKE) -->
+        <div
+          style="display: flex; gap: 10px; margin: 16px 0 4px; flex-wrap: wrap"
+        >
+          <input
+            type="text"
+            id="searchInput"
+            class="input"
+            style="max-width: 320px"
+            placeholder="Search by title, category or platform..."
+          />
+          <button type="button" id="searchBtn" class="btn btn-primary btn-sm">
+            Search
+          </button>
+          <button
+            type="button"
+            id="clearSearchBtn"
+            class="btn btn-outline btn-sm"
+          >
+            Clear
+          </button>
+        </div>
+        <p
+          id="searchInfo"
+          style="
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+          "
+        ></p>
+
+        <!-- Dynamic cards container: PHP / MySQL se aaye card yahan lagte hain -->
+        <div class="saved-grid" id="savedAdsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 3: PROJECT OVERVIEW TAB
+         #pane-home project aur uske tech stack ko samjhata hai. Viva me
+         project present ya explain karne ke liye kaam aata hai.
+         ==================================================================== -->
+    <section id="pane-home" class="view-pane">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="tag-pill">Short Video Advertisement Studio</span>
+            <h1 class="hero-h1">Real-Life Commercial Video Ads In Seconds.</h1>
+            <p
+              style="
+                color: var(--text-secondary);
+                font-size: 1.02rem;
+                max-width: 520px;
+                margin-bottom: 24px;
+              "
+            >
+              Built purely with HTML, CSS, JavaScript, PHP and MySQL. Create
+              multi-scene motion-graphics commercials for Food, College
+              Admissions, Tech, Fashion or your own product photos.
+            </p>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-open-view="studio"
+            >
+              Open Ad Studio
+            </button>
+          </div>
+          <div class="card" style="padding: 14px">
+            <img
+              id="overviewSampleImg"
+              src="assets/images/study_ad.jpg"
+              alt="Commercial Sample"
+              style="width: 100%; border-radius: 12px; display: block"
+            />
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 12px;
+              "
+            >
+              <div>
+                <strong style="font-size: 0.9rem"
+                  >Campus &amp; Brand Campaigns</strong
+                >
+                <p style="font-size: 0.77rem; color: var(--text-muted)">
+                  Multi-shot cuts • Motion wipes • .webm export
+                </p>
+              </div>
+              <span class="tag-pill">60 FPS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 tech stack summary card: paanch core language ka role dikhate hain -->
+        <div class="stack-grid">
+          <div class="stack-card">
+            <strong>HTML5 + CSS3</strong>
+            <p
+              style="
+                font-size: 0.83rem;
+                color: var(--text-secondary);
+                margin-top: 6px;
+              "
+            >
+              Clean responsive dark studio layout built with pure CSS3.
+            </p>
+          </div>
+          <div class="stack-card">
+            <strong>Vanilla JavaScript</strong>
+            <p
+              style="
+                font-size: 0.83rem;
+                color: var(--text-secondary);
+                margin-top: 6px;
+              "
+            >
+              60fps HTML5 Canvas motion-graphics video compositor, live text
+              editor and .webm export.
+            </p>
+          </div>
+          <div class="stack-card">
+            <strong>PHP + MySQL (XAMPP)</strong>
+            <p
+              style="
+                font-size: 0.83rem;
+                color: var(--text-secondary);
+                margin-top: 6px;
+              "
+            >
+              Secure PDO session authentication, storyboard builder API and
+              MySQL campaign storage.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 4: CREATOR ACCOUNT TAB (login / register form)
+         #pane-auth account banane ya login karne ka form hai. Name, email aur
+         password lekar PHP + MySQL (users table) me save karta hai.
+         ==================================================================== -->
+    <section id="pane-auth" class="view-pane">
+      <div class="auth-center">
+        <div class="auth-box">
+          <div class="auth-brand-row">
+            <img
+              src="assets/images/logo_icon.png"
+              alt="AdGenius Logo"
+              class="auth-logo-img"
+            />
+            <div>
+              <h2 style="font-size: 1.25rem; line-height: 1.15">
+                Creator Account
+              </h2>
+              <span
+                style="
+                  font-size: 0.72rem;
+                  color: var(--text-muted);
+                  text-transform: uppercase;
+                  letter-spacing: 0.08em;
+                  font-weight: 700;
+                "
+                >AdGenius Studio</span
+              >
+            </div>
+          </div>
+          <p
+            style="
+              font-size: 0.83rem;
+              color: var(--text-muted);
+              margin-top: 4px;
+            "
+          >
+            Sign in or register to save campaigns to MySQL.
+          </p>
+
+          <form id="accountForm" style="margin-top: 18px">
+            <div class="field">
+              <label class="field-label">Full Name</label>
+              <input
+                type="text"
+                id="accName"
+                class="input"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div class="field">
+              <label class="field-label">Email Address</label>
+              <input
+                type="email"
+                id="accEmail"
+                class="input"
+                value="[email protected]"
+                required
+              />
+            </div>
+            <div class="field">
+              <label class="field-label">Password</label>
+              <input
+                type="password"
+                id="accPass"
+                class="input"
+                value="demo123"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%">
+              Save &amp; Continue to Studio
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast popup box: bottom right corner me chhota status message -->
+    <div id="appToast" class="toast">Ready</div>
+
+    <!-- ====================================================================
+         EXTERNAL JAVASCRIPT FILES (body ke sabse end me)
+         Pehle HTML load hota hai, phir ye teen JS file isi order me chalti hain:
+                  1) ad_media_pack.js -> commercial photo ke path load karti hai
+                  2) video_engine.js  -> 60fps canvas video engine class banati hai
+                  3) studio_app.js    -> button, tab aur PHP API control karti hai
+         ==================================================================== -->
+    <script src="assets/js/ad_media_pack.js"></script>
+    <script src="assets/js/video_engine.js"></script>
+    <script src="assets/js/studio_app.js"></script>
+  </body>
+</html>
